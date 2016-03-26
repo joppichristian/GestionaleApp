@@ -1,7 +1,7 @@
 var response;
 
 $(document).ready(function(){
-	if(getCookie('nomeDB')=="")
+	if(getUrlVars()["nomeDB"]=="")
 		window.location.replace("index.html");
 
 	$("#invia_dati").on("click",function(){
@@ -10,7 +10,7 @@ $(document).ready(function(){
 	});
 	
 	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);
-	$("#toListMa").attr("href","materiali.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+getUrlVars()["vMA"]+"&aMA="+getUrlVars()["aMA"] + "&cMA=" + getUrlVars()["cMA"] + "&mMA=" + getUrlVars()["mMA"]);
+	$("#toListMa").attr("href","materiali.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+getUrlVars()["vMA"]+"&aMA="+getUrlVars()["aMA"] + "&cMA=" + getUrlVars()["cMA"] + "&mMA=" + getUrlVars()["mMA"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
 
 });
 
@@ -38,7 +38,7 @@ function addMateriale(){
 		      'db':getCookie('nomeDB')
 		   },
 		   success: function(data){		   
-		   		Materialize.toast('Materiale inserito', 2000,'',function(){window.location.href = 'materiali.html'});
+		   		Materialize.toast('Materiale inserito', 2000,'',function(){window.location.href = "materiali.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+getUrlVars()["vMA"]+"&aMA="+getUrlVars()["aMA"] + "&cMA=" + getUrlVars()["cMA"] + "&mMA=" + getUrlVars()["mMA"]+"&id_dipendente="+getUrlVars()["id_dipendente"]});
 			   return false;
 			},
 		   error: function (XMLHttpRequest, textStatus, errorThrown){

@@ -14,50 +14,50 @@ var rapida_cliente = 0;
 $(document).ready(function(){
 	if(getUrlVars()['nomeDB']=="")
 		window.location.replace("index.html");
-	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);
-	$('#schermata_dati').hide();
+	$("#toDashBoard").attr("href","dashboard.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
+
+	if(getCookie('vMA')==0)
+		$("#show_materiali").hide();
+	if(getCookie('vME')==0)
+		$("#show_mezzi").hide();	
+	$('select').material_select();
+	$('#schermata_clienti').hide();
 	$("#rapida_cliente").hide();
 	$('#schermata_materiali').hide();
 	$('#schermata_mezzi').hide();
 	$('#cliente_selezionato_new_page').hide();
 	$("#elenco_utilizzi_materiali").hide();
 	$("#elenco_utilizzi_mezzi").hide();
-	$("#to_date").click(function(){
-		if(cliente_selezionato != -1){
-			$('#cliente_selezionato_new_page').show();
-			$('#schermata_clienti').hide();
-			$('#schermata_dati').show();
+	$("#to_clienti").click(function(){
+		if($('#pausa').val() < 0 || $('#pausa').val() > 120){
+			Materialize.toast("Inserisci una pausa valida tra 0 e 120 minuti",2000);
+			$('#pausa').focus();
 		}
-		else
-			Materialize.toast("Seleziona un cliente!",2000);
+		else if($('.select-dropdown').val()== "Seleziona orari")
+		{
+			Materialize.toast("Inserisci qualche fascia oraria di lavoro",2000);
+			$('#ore').focus();
+		}
+		else{
+			$('#cliente_selezionato_new_page').show();
+			$('#schermata_clienti').show();
+			$('#schermata_dati').hide();
+			$("#ore_new_page").empty();
+			$("#ore_new_page").append("<div class='chip' >"+$(".select-dropdown").val()+"</div>");
+		}
 	});
-	$("#back_clienti").click(function(){
+	$("#back_data").click(function(){
 		$('#cliente_selezionato_new_page').hide();
-		$('#schermata_clienti').show();
-		$('#schermata_dati').hide();
+		$('#schermata_clienti').hide();
+		$('#schermata_dati').show();
 	});
 	$('#complete').click(function(){
-		if($('#ora_inizio').val() != '' && $('#ora_fine').val() != '' && $('#pausa').val() >= 0 && $('#pausa').val() <= 120 ){
-			var spl = $('#ora_inizio').val().split(':');
-			if(parseInt(spl[0]) < 0 || parseInt(spl[0]) > 24 || parseInt(spl[1]) < 0 || parseInt(spl[1]) > 59 || isNaN(spl[0]) || isNaN(spl[1]) || spl[0]== '' ||spl[1]== ''|| spl.length!=2)
-			{
-				Materialize.toast("Ora di inizio non valida...utilizza hh:mm!",2000);
-				return false;
-			}
-			spl = $('#ora_fine').val().split(':');
-			if(parseInt(spl[0]) < 0 || parseInt(spl[0]) > 24 || parseInt(spl[1]) < 0 || parseInt(spl[1]) > 59 || isNaN(spl[0]) || isNaN(spl[1]) || spl[0]== '' ||spl[1]== ''|| spl.length!=2)
-			{
-				Materialize.toast("Ora di fine non valida...utilizza hh:mm!",2000);
-				return false;
-			}
+		if(cliente_selezionato != -1 ){
 			aggiungiRapportino();
 		}
 		else
 		{
-			if($('#pausa').val() >= 0 && $('#pausa').val() <= 120)
-				Materialize.toast("Inserisci un'ora di inizio e un'ora di fine valida!",2000);
-			else
-				Materialize.toast("Inserisci una pausa valida tra 0 e 120 minuti",2000);
+			Materialize.toast("Inserisci un cliente",2000);
 		}
 
 	});
@@ -73,6 +73,7 @@ $(document).ready(function(){
 	populateListClient("");
 	populateListMaterials("");
 	populateListMezzi("");
+	populateListFascieOrarie();
 	$(".mezzi").hide();
 	$(".materiali").hide();
 	$("#show_materiali").click(function(){
@@ -91,28 +92,7 @@ $(document).ready(function(){
 		$(".mezzi").hide();
 		console.log(mezzi_selezionati);
 	});
-	$('#ora_inizio').focusout(function(){
-		if($('#ora_inizio').val() != ''){
-			var spl = $('#ora_inizio').val().split(':');
-			if(parseInt(spl[0]) < 0 || parseInt(spl[0]) > 24 || parseInt(spl[1]) < 0 || parseInt(spl[1]) > 59 || spl.length!=2)
-			{
-				Materialize.toast("Ora di inizio non valida...utilizza hh:mm!",2000);
-				$('#ora_inizio').focus();
-			}
-		}
-
-	});
-	$('#ora_fine').focusout(function(){
-		if($('#ora_fine').val() != ''){
-			var spl = $('#ora_fine').val().split(':');
-			if(parseInt(spl[0]) < 0 || parseInt(spl[0]) > 24 || parseInt(spl[1]) < 0 || parseInt(spl[1]) > 59 || spl.length!=2)
-			{
-				Materialize.toast("Ora di fine non valida...utilizza hh:mm!",2000);
-				$('#ora_fine').focus();
-			}
-			
-		}
-	});
+	
 	$('#pausa').focusout(function(){
 		if($('#pausa').val() < 0 || $('#pausa').val() > 120){
 			Materialize.toast("Inserisci una pausa valida tra 0 e 120 minuti",2000);
@@ -120,6 +100,12 @@ $(document).ready(function(){
 		}
 
 	});
+	
+	if(getCookie('aCL') ==0)
+	{
+		$("#show_add_cliente").hide();
+	}
+	
 	$("#show_add_cliente").on("click",function(){
 		if(rapida_cliente ==0){
 			$("#rapida_cliente").show();
@@ -151,9 +137,9 @@ function populateListClient(filter){
 	        elementi[i] = document.createElement('li');
 	        elementi[i].className ="collection-item";
 	        if(data[i]['tipologia'] == 'p'){
-		        elementi[i].innerHTML = '<div><i class="info small material-icons purple-text">account_circle</i>'+data[i]['nominativo']+'<a href="#!" class="secondary-content"><i class="select_clients material-icons purple-text">call_received</i></a></div>	';
+		        elementi[i].innerHTML = '<div class="select_clients"><i class="info small material-icons purple-text">&#xE853;</i>'+data[i]['nominativo']+'<a href="#!" class="secondary-content"><i class=" material-icons purple-text">&#xE0B5;</i></a></div>	';
 		    }else{
-		        elementi[i].innerHTML = '<div><i class="info small material-icons purple-text">business</i>'+data[i]['nominativo']+'<a href="#!" class="secondary-content"><i class="select_clients material-icons purple-text">call_received</i></a></div>	';
+		        elementi[i].innerHTML = '<div class="select_clients"><i class="info small material-icons purple-text">&#xE0AF;</i>'+data[i]['nominativo']+'<a href="#!" class="secondary-content"><i class=" material-icons purple-text">&#xE0B5;</i></a></div>	';
 	        }
 
 	    	$("#elenco_clienti").append(elementi[i]);
@@ -172,10 +158,7 @@ function populateListClient(filter){
 				cliente_chip.className= "chip";
 				cliente_chip.innerHTML=json_clienti[index_Cl]['nominativo'];
 				$("#cliente_selezionato").append(cliente_chip);
-				var cliente_chip_2 = document.createElement('div');
-				cliente_chip_2.className= "chip";
-				cliente_chip_2.innerHTML=json_clienti[index_Cl]['nominativo'];
-				$("#cliente_selezionato_new_page").append(cliente_chip_2);
+				
 	        });
 		}
 	});
@@ -194,7 +177,7 @@ function populateListMaterials(filter){
 	        elementi[i] = document.createElement('li');
 	        elementi[i].className ="collection-item";
 
-	        elementi[i].innerHTML = '<div><i class="info small material-icons purple-text">local_play</i>'+(data[i]['codice']+' - '+data[i]['descrizione']).substr(0,18)+'...<a href="#!" class="secondary-content"><i class="select_materials material-icons purple-text">add</i></a></div>	';
+	        elementi[i].innerHTML = '<div><i class="info small material-icons purple-text">&#xE553;</i>'+(data[i]['codice']+' - '+data[i]['descrizione']).substr(0,18)+'...<a href="#!" class="secondary-content"><i class="select_materials material-icons purple-text">&#xE145;</i></a></div>	';
 
 
 	    	$("#elenco_materiali").append(elementi[i]);
@@ -248,7 +231,7 @@ function populateListMezzi(filter){
 	        elementi[i] = document.createElement('li');
 	        elementi[i].className ="collection-item";
 
-	        elementi[i].innerHTML = '<div><i class="info small material-icons purple-text">directions_bus</i>'+data[i]['descrizione'].substr(0,18)+'...<a href="#!" class="secondary-content"><i class="select_mezzi material-icons purple-text">add</i></a></div>	';
+	        elementi[i].innerHTML = '<div><i class="info small material-icons purple-text">&#xE530;</i>'+data[i]['descrizione'].substr(0,18)+'...<a href="#!" class="secondary-content"><i class="select_mezzi material-icons purple-text">&#xE145;</i></a></div>	';
 
 
 	    	$("#elenco_mezzi").append(elementi[i]);
@@ -300,14 +283,14 @@ function updateListUtilizzi(){
 	for(var i=0; i < materiali_selezionati.length ;i++){
 		chip[i] = document.createElement('div');
 		chip[i].className= "chip";
-		chip[i].innerHTML=materiali_selezionati[i]['descrizione'] + '&nbsp; x' + materiali_selezionati[i]['quantita']+'<a href="#!" ><i class="remove_materiale material-icons purple-text">remove_circle</i></a>';
+		chip[i].innerHTML=materiali_selezionati[i]['descrizione'] + '&nbsp; x' + materiali_selezionati[i]['quantita']+'<a href="#!" ><i class="remove_materiale material-icons purple-text">&#xE15C;</i></a>';
   		$("#elenco_utilizzi_materiali").append(chip[i]);
 
 	}
 	for(var i=0; i < mezzi_selezionati.length ;i++){
 		chip[i] = document.createElement('div');
 		chip[i].className= "chip";
-		chip[i].innerHTML=mezzi_selezionati[i]['descrizione'] + '&nbsp; x' + mezzi_selezionati[i]['quantita']+'h <a href="#!" ><i class="remove_mezzo material-icons purple-text">remove_circle</i></a>';
+		chip[i].innerHTML=mezzi_selezionati[i]['descrizione'] + '&nbsp; x' + mezzi_selezionati[i]['quantita']+'h <a href="#!" ><i class="remove_mezzo material-icons purple-text">&#xE15C;</i></a>';
   		$("#elenco_utilizzi_mezzi").append(chip[i]);
 
 	}
@@ -329,27 +312,90 @@ function removeMezzo(i){
 		 mezzi_selezionati.splice(i,1);
 }
 function aggiungiRapportino(){
-	$.ajax({
-      type:"POST",
-      url: "http://dashboard.gestionaleclj.com/script_php/postRapportinoRapido.php", //Relative or absolute path to response.php file
-      async:false,
-      data:{
-	  	'ora_inizio': $('#ora_inizio').val(),
-	  	'ora_fine': $('#ora_fine').val(),
-	  	'pausa': $('#pausa').val(),
-	  	'note':$('#note').val(),
-	  	'dipendente':getUrlVars()['id_dipendente'],
-	  	'cliente':cliente_selezionato,
-	  	'db':getUrlVars()['nomeDB'],
-	  	'materiali':materiali_selezionati,
-	  	'mezzi':mezzi_selezionati
-	  },
-      success: function(data) {
-	    console.log(data);
-	  	Materialize.toast("Rapportino inserito",2000,"",function(){window.location.replace("dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);})
+	var ar_ore = new Array();
+	
+	ar_ore = $(".select-dropdown").val().split(' ').join('').split(',').join(' ').split('--').join(' ').split(' ');
+	ar_ore.sort();
+	
+	var inizio = new Array();
+	var fine = new Array();
+	
+	var tmp_last;
+	
+	inizio.push(ar_ore[0]);
+	fine.push(ar_ore[1]);
+	tmp_last = ar_ore[0];
+	if(ar_ore.length > 2){
+		for(var i =2;i<ar_ore.length;i+=2)
+		{
+			if((parseInt(tmp_last.split(':')[0])*60)+parseInt(tmp_last.split(':')[1])+30 != (parseInt(ar_ore[i].split(':')[0])*60)+parseInt(ar_ore[i].split(':')[1])){
+				inizio.push(ar_ore[i]);
+				fine.push(ar_ore[i+1]);
+				tmp_last = ar_ore[i];
+			}
+			else{
+				fine.pop();
+				fine.push(ar_ore[i+1]);
+				tmp_last = ar_ore[i];
+			}
 		}
-	});
-
+	}
+	var success = true;
+	for(var i =0;i<inizio.length;i++)
+	{
+		if(i==0){
+			$.ajax({
+		      type:"POST",
+		      url: "http://dashboard.gestionaleclj.com/script_php/postRapportinoRapido.php", //Relative or absolute path to response.php file
+		      async:false,
+		      data:{
+			  	'ora_inizio': inizio[i],
+			  	'ora_fine': fine[i],
+			  	'pausa': $('#pausa').val(),
+			  	'note':$('#note').val(),
+			  	'dipendente':getUrlVars()['id_dipendente'],
+			  	'cliente':cliente_selezionato,
+			  	'db':getUrlVars()['nomeDB'],
+			  	'materiali':materiali_selezionati,
+			  	'mezzi':mezzi_selezionati
+			  },
+		      success: function(data) {
+			    console.log(data);
+				},
+				error:function(){
+					success = false;
+				}
+			});
+		}
+		else{
+			$.ajax({
+		      type:"POST",
+		      url: "http://dashboard.gestionaleclj.com/script_php/postRapportinoRapido.php", //Relative or absolute path to response.php file
+		      async:false,
+		      data:{
+			  	'ora_inizio': inizio[i],
+			  	'ora_fine': fine[i],
+			  	'pausa': $('#pausa').val(),
+			  	'note':$('#note').val(),
+			  	'dipendente':getUrlVars()['id_dipendente'],
+			  	'cliente':cliente_selezionato,
+			  	'db':getUrlVars()['nomeDB'],
+			  	'materiali':null,
+			  	'mezzi':null
+			  },
+		      success: function(data) {
+			    console.log(data);
+				},
+				error:function(){
+					success = false;
+				}
+			});
+		}
+	}
+	if(success)
+	{
+		Materialize.toast("Rapportino inserito",2000,"",function(){window.location.replace("dashboard.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&id_dipendente="+getUrlVars()["id_dipendente"])});
+	}
 }
 function addCliente(){
 	if($("#nominativo").val() == ""){
@@ -402,6 +448,69 @@ function addCliente(){
 		});		
 		return false;
 }
+function populateListFascieOrarie(){
+	var occupato = false;
+	var start,stop;
+	var tmp_ora,tmp_min,tmp;
+	 $("#ora").append("<option value=-1 disabled>Seleziona orari</option>");
+	$.ajax({
+	      url: "http://dashboard.gestionaleclj.com/script_php/getFascieOrarie.php", //Relative or absolute path to response.php file
+	      type:"POST",
+	      async:false,
+	      data:{
+		      'dip': getUrlVars()['id_dipendente'],
+		      'db':getUrlVars()['nomeDB']
+		   },
+		   success: function(data){	
+			   console.log(data);
+			   for(var i=0;i<1440;i+=30){
+				   occupato = false;
+				   tmp_ora = Math.round((i-1)/60).toString();
+				   if(tmp_ora.length == 1)
+				   		tmp_ora = '0'+tmp_ora;
+				   	tmp_min = (i%60).toString();
+				   if(tmp_min.length == 1)
+				   		tmp_min = '0'+tmp_min;
+				   tmp = tmp_ora+":"+tmp_min;
+				   $("#ora").append("<option value="+i+">"+tmp+"</option>");
+				   tmp_ora = Math.round((i+29)/60).toString();
+				   if(tmp_ora.length == 1)
+				   		tmp_ora = '0'+tmp_ora;
+				   	tmp_min = ((i+30)%60).toString();
+				   if(tmp_min.length == 1)
+				   		tmp_min = '0'+tmp_min;
+				   tmp = tmp_ora+":"+tmp_min;
+				   $("#ora option[value="+i+"]").text($("#ora option[value="+i+"]").text()+" -- "+tmp);   				   
+			   }
+			   for(var i=0;data != null && i<data.length;i++)
+			   {	
+				   
+				   tmp = data[i]['inizio'].split(' ')[1];
+				   tmp_ora = tmp.split(':')[0];
+				   tmp_min = tmp.split(':')[1];
+				   tmp = parseInt(tmp_ora)*60+parseInt(tmp_min);
+				   start = tmp;
+				   tmp = data[i]['fine'].split(' ')[1];
+				   tmp_ora = tmp.split(':')[0];
+				   tmp_min = tmp.split(':')[1];
+				   tmp = parseInt(tmp_ora)*60+parseInt(tmp_min);
+				   stop = tmp
+				   for(var j = start ; j <= stop-30 ; j+=30){
+					   $("#ora option[value="+j+"]").prop("disabled",true);
+					   $("#ora option[value="+j+"]").text($("#ora option[value="+j+"]").text() +"       " + data[i]['nominativo']);
+				   }
+				}
+			   $('select').material_select("update");
+
+			},
+		   error: function (XMLHttpRequest, textStatus, errorThrown){
+			   Materialize.toast('Errore di inserimento', 2000);
+			    return false;
+
+			}
+		});		
+}
+
 function getUrlVars() {
 	var vars = {};
 	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -409,3 +518,4 @@ function getUrlVars() {
 	});
 	return vars;
 }
+

@@ -20,9 +20,9 @@ $(document).ready(function() {
 	else
 		$("#mMA").show();
 
-	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);
-	$("#toListMa").attr("href","materiali.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+getUrlVars()["vMA"]+"&aMA="+getUrlVars()["aMA"] + "&cMA=" + getUrlVars()["cMA"] + "&mMA=" + getUrlVars()["mMA"]);
-	$("#aMA").attr("href","addMateriale.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+getUrlVars()["vMA"]+"&aMA="+getUrlVars()["aMA"] + "&cMA=" + getUrlVars()["cMA"] + "&mMA=" + getUrlVars()["mMA"]);
+	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
+	$("#toListMa").attr("href","materiali.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+getUrlVars()["vMA"]+"&aMA="+getUrlVars()["aMA"] + "&cMA=" + getUrlVars()["cMA"] + "&mMA=" + getUrlVars()["mMA"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
+	$("#aMA").attr("href","addMateriale.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+getUrlVars()["vMA"]+"&aMA="+getUrlVars()["aMA"] + "&cMA=" + getUrlVars()["cMA"] + "&mMA=" + getUrlVars()["mMA"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
 
 	$("#info").show();
 	$("#modifica_materiale").hide();
@@ -70,7 +70,7 @@ function populateList(filter){
 	        elementi[i] = document.createElement('li');
 	        elementi[i].className ="collection-item";
 	        
-	        elementi[i].innerHTML = '<div><i class="info small material-icons red-text">&#xE553;</i>'+data[i]['codice']+' - '+data[i]['descrizione']+'<a href="#!" class="secondary-content"><i class="explode material-icons red-text">&#xE0B5;</i></a></div>	';
+	        elementi[i].innerHTML = '<div class="explode"><i class="info small material-icons red-text">&#xE553;</i>'+data[i]['codice']+' - '+data[i]['descrizione']+'<a href="#!" class="secondary-content"><i class="material-icons red-text">&#xE0B5;</i></a></div>	';
 	    	
 	    	
 	    	$("#elenco").append(elementi[i]);

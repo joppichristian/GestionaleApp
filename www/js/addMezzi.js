@@ -1,7 +1,7 @@
 var response;
 
 $(document).ready(function(){
-	if(getCookie('nomeDB')=="")
+	if(getUrlVars()["nomeDB"]=="")
 		window.location.replace("index.html");
 
 	$("#invia_dati").on("click",function(){
@@ -10,7 +10,7 @@ $(document).ready(function(){
 	});
 	
 	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);
-	$("#toListMe").attr("href","mezzi.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+getUrlVars()["vME"]+"&aME="+getUrlVars()["aME"] + "&cME=" + getUrlVars()["cME"] + "&mME=" + getUrlVars()["mME"]);
+	$("#toListMe").attr("href","mezzi.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+getUrlVars()["vME"]+"&aME="+getUrlVars()["aME"] + "&cME=" + getUrlVars()["cME"] + "&mME=" + getUrlVars()["mME"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
 
 });
 
@@ -36,7 +36,7 @@ function addMezzo(){
 		      'db':getCookie('nomeDB')
 		   },
 		   success: function(data){		   
-		   		Materialize.toast('Mezzo inserito', 2000,'',function(){window.location.href = 'mezzi.html'});
+		   		Materialize.toast('Mezzo inserito', 2000,'',function(){window.location.href = "mezzi.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+getUrlVars()["vME"]+"&aME="+getUrlVars()["aME"] + "&cME=" + getUrlVars()["cME"] + "&mME=" + getUrlVars()["mME"]+"&id_dipendente="+getUrlVars()["id_dipendente"]});
 			   return false;
 			},
 		   error: function (XMLHttpRequest, textStatus, errorThrown){

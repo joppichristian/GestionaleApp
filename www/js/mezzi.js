@@ -48,9 +48,9 @@ $(document).ready(function() {
 		$("#modal_cancellazione").closeModal();
 	});
 	
-	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);
-	$("#toListMe").attr("href","mezzi.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+getUrlVars()["vME"]+"&aME="+getUrlVars()["aME"] + "&cME=" + getUrlVars()["cME"] + "&mME=" + getUrlVars()["mME"]);
-	$("#aME").attr("href","addMezzo.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+getUrlVars()["vME"]+"&aME="+getUrlVars()["aME"] + "&cME=" + getUrlVars()["cME"] + "&mME=" + getUrlVars()["mME"]);
+	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
+	$("#toListMe").attr("href","mezzi.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+getUrlVars()["vME"]+"&aME="+getUrlVars()["aME"] + "&cME=" + getUrlVars()["cME"] + "&mME=" + getUrlVars()["mME"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
+	$("#aME").attr("href","addMezzo.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+getUrlVars()["vME"]+"&aME="+getUrlVars()["aME"] + "&cME=" + getUrlVars()["cME"] + "&mME=" + getUrlVars()["mME"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
 
 	
 	populateList("");
@@ -74,7 +74,7 @@ function populateList(filter){
 	        elementi[i] = document.createElement('li');
 	        elementi[i].className ="collection-item";
 	        
-	        elementi[i].innerHTML = '<div><i class="info small material-icons brown-text">directions_bus</i>'+data[i]['descrizione']+'<a href="#!" class="secondary-content"><i class="explode material-icons brown-text">&#xE0B5;</i></a></div>	';
+	        elementi[i].innerHTML = '<div class="explode"><i class="info small material-icons brown-text">directions_bus</i>'+data[i]['descrizione']+'<a href="#!" class="secondary-content"><i class="material-icons brown-text">&#xE0B5;</i></a></div>	';
 	    	
 	    	
 	    	$("#elenco").append(elementi[i]);

@@ -20,9 +20,9 @@ $(document).ready(function() {
 	else
 		$("#mCL").show();
 
-	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);
-	$("#toListCl").attr("href","clienti.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+getUrlVars()["vCL"]+"&aCL="+getUrlVars()["aCL"] + "&cCL=" + getUrlVars()["cCL"] + "&mCL=" + getUrlVars()["mCL"]);
-	$("#aCL").attr("href","addCliente.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+getUrlVars()["vCL"]+"&aCL="+getUrlVars()["aCL"] + "&cCL=" + getUrlVars()["cCL"] + "&mCL=" + getUrlVars()["mCL"]);
+	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
+	$("#toListCl").attr("href","clienti.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+getUrlVars()["vCL"]+"&aCL="+getUrlVars()["aCL"] + "&cCL=" + getUrlVars()["cCL"] + "&mCL=" + getUrlVars()["mCL"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
+	$("#aCL").attr("href","addCliente.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+getUrlVars()["vCL"]+"&aCL="+getUrlVars()["aCL"] + "&cCL=" + getUrlVars()["cCL"] + "&mCL=" + getUrlVars()["mCL"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
 		
 	$("#info").show();
 	$("#modifica_cliente").hide();
@@ -71,9 +71,9 @@ function populateList(filter){
 	        elementi[i] = document.createElement('li');
 	        elementi[i].className ="collection-item";
 	        if(data[i]['tipologia'] == 'p'){
-		        elementi[i].innerHTML = '<div><i class="info small material-icons blue-text">&#xE853;</i>'+data[i]['nominativo']+'<a href="#!" class="secondary-content"><i class="explode material-icons blue-text">&#xE0B5;</i></a></div>	';
+		        elementi[i].innerHTML = '<div class="explode" ><i class="info small material-icons blue-text">&#xE853;</i>'+data[i]['nominativo']+'<a href="#!" class="secondary-content"><i class="material-icons blue-text">&#xE0B5;</i></a></div>	';
 		    }else{
-		        elementi[i].innerHTML = '<div><i class="info small material-icons blue-text">&#xE0AF;</i>'+data[i]['nominativo']+'<a href="#!" class="secondary-content"><i class="explode material-icons blue-text">&#xE0B5;</i></a></div>	';
+		        elementi[i].innerHTML = '<div class="explode"><i class="info small material-icons blue-text">&#xE0AF;</i>'+data[i]['nominativo']+'<a href="#!" class="secondary-content"><i class="material-icons blue-text">&#xE0B5;</i></a></div>	';
 	        }
 
 	    	$("#elenco").append(elementi[i]);

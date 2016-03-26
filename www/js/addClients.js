@@ -4,7 +4,7 @@ $(document).ready(function(){
 	if(getUrlVars()['nomeDB']=="")
 		window.location.replace("index.html");
 	if(getUrlVars()["aCL"]==0)
-		window.location.replace("dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);
+		window.location.replace("dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
 	$('select').material_select();
 	$("#div_iva").hide();
 	$("#tipologia").on("change",function(){
@@ -25,8 +25,8 @@ $(document).ready(function(){
 		addCliente();
 
 	});
-	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]);
-	$("#toListCl").attr("href","clienti.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+getUrlVars()["vCL"]+"&aCL="+getUrlVars()["aCL"] + "&cCL=" + getUrlVars()["cCL"] + "&mCL=" + getUrlVars()["mCL"]);
+	$("#toDashBoard").attr("href","dashboard.html?nomeDB="+getUrlVars()["nomeDB"]+"&classe_privilegi="+getUrlVars()["classe_privilegi"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
+	$("#toListCl").attr("href","clienti.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+getUrlVars()["vCL"]+"&aCL="+getUrlVars()["aCL"] + "&cCL=" + getUrlVars()["cCL"] + "&mCL=" + getUrlVars()["mCL"]+"&id_dipendente="+getUrlVars()["id_dipendente"]);
 });
 
 
@@ -70,7 +70,7 @@ function addCliente(){
 		      'db':getUrlVars()['nomeDB']
 		   },
 		   success: function(data){		   
-		   		Materialize.toast('Cliente inserito', 2000,'',function(){window.location.href = 'clienti.html'});
+		   		Materialize.toast('Cliente inserito', 2000,'',function(){window.location.href = "clienti.html?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+getUrlVars()["vCL"]+"&aCL="+getUrlVars()["aCL"] + "&cCL=" + getUrlVars()["cCL"] + "&mCL=" + getUrlVars()["mCL"]+"&id_dipendente="+getUrlVars()["id_dipendente"]});
 			   return false;
 			},
 		   error: function (XMLHttpRequest, textStatus, errorThrown){
