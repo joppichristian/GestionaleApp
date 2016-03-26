@@ -1,4 +1,8 @@
 
+body{
+	width: 100%;
+}
+
 .item-menu{
     margin-top: 3%;
 	text-align: center;

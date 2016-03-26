@@ -1,6 +1,7 @@
 var vCL,aCL,cCL,mCL,mCA,vMA,cMA,mMA,aMA,vME,cME,mME,aME,RR;
 
 $(document).ready(function(){
+	$(".button-collapse").sideNav();
   $.ajax({
       url: "http://dashboard.gestionaleclj.com/script_php/getGroupDetails.php",
       type:"POST",
@@ -65,19 +66,19 @@ $(document).ready(function(){
 	        $("#RR").hide();
 		
 		
-		var parametri = "?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+vCL+"&aCL="+aCL + "&cCL=" + cCL + "&mCL=" + mCL;
+		var parametri = "?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vCL="+vCL+"&aCL="+aCL + "&cCL=" + cCL + "&mCL=" + mCL+"&id_dipendente="+getUrlVars()["id_dipendente"];
 		$("#vCL").attr("href","clienti.html"+parametri);
 		$("#aCL").attr("href","addCliente.html"+parametri);
 		
-		parametri = "?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+vME+"&aME="+aME + "&cME=" + cME + "&mME=" + mME;
+		parametri = "?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vME="+vME+"&aME="+aME + "&cME=" + cME + "&mME=" + mME+"&id_dipendente="+getUrlVars()["id_dipendente"];
 		$("#vME").attr("href","mezzi.html"+parametri);
 		$("#aME").attr("href","addMezzo.html"+parametri);
 		
-		parametri = "?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+vMA+"&aMA="+aMA + "&cMA=" + cMA + "&mMA=" + mMA;
+		parametri = "?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&vMA="+vMA+"&aMA="+aMA + "&cMA=" + cMA + "&mMA=" + mMA+"&id_dipendente="+getUrlVars()["id_dipendente"];
 		$("#vMA").attr("href","materiali.html"+parametri);
 		$("#aMA").attr("href","addMateriale.html"+parametri);
 			
-		parametri = "?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"];
+		parametri = "?classe_privilegi="+getUrlVars()["classe_privilegi"]+"&nomeDB="+getUrlVars()["nomeDB"]+"&id_dipendente="+getUrlVars()["id_dipendente"];
 		$("#toRR").attr("href","addRapportinoToday.html"+parametri);
 		
 		
