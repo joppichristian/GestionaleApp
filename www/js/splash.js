@@ -6,6 +6,8 @@ $(document).ready(function(){
 
 });
 function showLogin(){
-  $("#sez_splash").hide();
-  $("#sez_login").show();
+  //$("#sez_splash").hide();
+  $("#sez_splash").fadeOut(1000);
+  $("#sez_login").fadeIn(2000);
+  //$("#sez_login").show();
 }
